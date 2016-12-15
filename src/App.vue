@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div className="App">
-      <p className="App-intro">
+    <div class="App">
+      <p class="App-intro">
         <svg :width="svg.width" :height="svg.height" ref="svg">
             <Pythagoras :w="baseW"
                         :h="baseW"
-                        :height-factor="heightFactor"
+                        :heightFactor="heightFactor"
                         :lean="lean"
                         :x="svg.width / 2 - 40"
                         :y="svg.height - baseW"
@@ -20,11 +20,27 @@
 <script>
 import { select as d3select, mouse as d3mouse } from 'd3-selection'
 import { scaleLinear } from 'd3-scale'
+import Pythagoras from './components/Pythagoras.js'
+
+const throttleWithRAF = fn => {
+  let running = false
+  return function () {
+    if (running) return
+    running = true
+    const throttlerFn = 'requestIdleCallback' in window ? window.requestIdleCallback : window.requestAnimationFrame
+    throttlerFn(() => {
+      fn.apply(this, arguments)
+      running = false
+    })
+  }
+}
 
 const realMax = 11
 
 export default {
   name: 'app',
+
+  components: { Pythagoras },
 
   data () {
     return {
@@ -32,7 +48,6 @@ export default {
         width: 1280,
         height: 600
       },
-
       currentMax: 0,
       baseW: 80,
       heightFactor: 0,
@@ -55,18 +70,19 @@ export default {
 
     onMouseMove () {
       const [x, y] = d3mouse(this.$refs.svg)
+      this.update(x, y)
+    },
 
+    update: throttleWithRAF(function (x, y) {
       const scaleFactor = scaleLinear()
         .domain([this.svg.height, 0])
         .range([0, 0.8])
-
       const scaleLean = scaleLinear()
         .domain([0, this.svg.width / 2, this.svg.width])
         .range([0.5, 0, -0.5])
-
       this.heightFactor = scaleFactor(y)
       this.lean = scaleLean(x)
-    }
+    })
   }
 }
 </script>

@@ -2,9 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import Pythagoras from './components/Pythagoras.vue'
-
-Vue.component('Pythagoras', Pythagoras)
 
 /* eslint-disable no-new */
 new Vue({
