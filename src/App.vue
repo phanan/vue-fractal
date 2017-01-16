@@ -20,14 +20,14 @@
 <script>
 import { select as d3select, mouse as d3mouse } from 'd3-selection'
 import { scaleLinear } from 'd3-scale'
-import Pythagoras from './components/Pythagoras.js'
+import Pythagoras from './components/Pythagoras.vue'
 
 const throttleWithRAF = fn => {
   let running = false
   return function () {
     if (running) return
     running = true
-    const throttlerFn = 'requestIdleCallback' in window ? window.requestIdleCallback : window.requestAnimationFrame
+    const throttlerFn = window.requestAnimationFrame
     throttlerFn(() => {
       fn.apply(this, arguments)
       running = false

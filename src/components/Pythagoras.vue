@@ -1,3 +1,4 @@
+<script>
 import { interpolateViridis } from 'd3-scale'
 
 Math.deg = radians => {
@@ -79,3 +80,4 @@ const Pythagoras = {
 }
 
 export default Pythagoras
+</script>
